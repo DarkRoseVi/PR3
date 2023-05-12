@@ -1,0 +1,660 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище pr2ViModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Characteristic">
+          <Key>
+            <PropertyRef Name="SliderId" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="SliderId" Type="int" Nullable="false" />
+          <Property Name="TypeId" Type="int" />
+          <Property Name="ColorId" Type="int" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="SurName" Type="nvarchar" MaxLength="50" />
+          <Property Name="RequirementsId" Type="int" />
+        </EntityType>
+        <EntityType Name="Color">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Manager">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="SurName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ManagerId" Type="int" />
+          <Property Name="ClientId" Type="int" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="SliderId" Type="int" />
+        </EntityType>
+        <EntityType Name="RequiredCharacteristic">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Requirements">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="TargetId" Type="int" />
+          <Property Name="RequiredCharacteristicId" Type="int" />
+        </EntityType>
+        <EntityType Name="Slider">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cost" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Target">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Characteristic_Color">
+          <End Role="Color" Type="Self.Color" Multiplicity="0..1" />
+          <End Role="Characteristic" Type="Self.Characteristic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Color">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Characteristic">
+              <PropertyRef Name="ColorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Characteristic_Slider">
+          <End Role="Slider" Type="Self.Slider" Multiplicity="1" />
+          <End Role="Characteristic" Type="Self.Characteristic" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Slider">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Characteristic">
+              <PropertyRef Name="SliderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Characteristic_Type">
+          <End Role="Type" Type="Self.Type" Multiplicity="0..1" />
+          <End Role="Characteristic" Type="Self.Characteristic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Characteristic">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Client_Requirements">
+          <End Role="Requirements" Type="Self.Requirements" Multiplicity="0..1" />
+          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Requirements">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="RequirementsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Manager">
+          <End Role="Manager" Type="Self.Manager" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Manager">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="ManagerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Slider">
+          <End Role="Slider" Type="Self.Slider" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Slider">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="SliderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requirements_RequiredCharacteristic">
+          <End Role="RequiredCharacteristic" Type="Self.RequiredCharacteristic" Multiplicity="0..1" />
+          <End Role="Requirements" Type="Self.Requirements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequiredCharacteristic">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Requirements">
+              <PropertyRef Name="RequiredCharacteristicId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requirements_Target">
+          <End Role="Target" Type="Self.Target" Multiplicity="0..1" />
+          <End Role="Requirements" Type="Self.Requirements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Requirements">
+              <PropertyRef Name="TargetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище pr2ViModelContainer">
+          <EntitySet Name="Characteristic" EntityType="Self.Characteristic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Color" EntityType="Self.Color" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Manager" EntityType="Self.Manager" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RequiredCharacteristic" EntityType="Self.RequiredCharacteristic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Requirements" EntityType="Self.Requirements" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Slider" EntityType="Self.Slider" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Target" EntityType="Self.Target" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Type" EntityType="Self.Type" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Characteristic_Color" Association="Self.FK_Characteristic_Color">
+            <End Role="Color" EntitySet="Color" />
+            <End Role="Characteristic" EntitySet="Characteristic" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Characteristic_Slider" Association="Self.FK_Characteristic_Slider">
+            <End Role="Slider" EntitySet="Slider" />
+            <End Role="Characteristic" EntitySet="Characteristic" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Characteristic_Type" Association="Self.FK_Characteristic_Type">
+            <End Role="Type" EntitySet="Type" />
+            <End Role="Characteristic" EntitySet="Characteristic" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Client_Requirements" Association="Self.FK_Client_Requirements">
+            <End Role="Requirements" EntitySet="Requirements" />
+            <End Role="Client" EntitySet="Client" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Client" Association="Self.FK_Order_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Manager" Association="Self.FK_Order_Manager">
+            <End Role="Manager" EntitySet="Manager" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Slider" Association="Self.FK_Order_Slider">
+            <End Role="Slider" EntitySet="Slider" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requirements_RequiredCharacteristic" Association="Self.FK_Requirements_RequiredCharacteristic">
+            <End Role="RequiredCharacteristic" EntitySet="RequiredCharacteristic" />
+            <End Role="Requirements" EntitySet="Requirements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requirements_Target" Association="Self.FK_Requirements_Target">
+            <End Role="Target" EntitySet="Target" />
+            <End Role="Requirements" EntitySet="Requirements" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="pr2ViModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="pr2ViEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Characteristic" EntityType="pr2ViModel.Characteristic" />
+          <EntitySet Name="Client" EntityType="pr2ViModel.Client" />
+          <EntitySet Name="Color" EntityType="pr2ViModel.Color" />
+          <EntitySet Name="Manager" EntityType="pr2ViModel.Manager" />
+          <EntitySet Name="Order" EntityType="pr2ViModel.Order" />
+          <EntitySet Name="RequiredCharacteristic" EntityType="pr2ViModel.RequiredCharacteristic" />
+          <EntitySet Name="Requirements" EntityType="pr2ViModel.Requirements" />
+          <EntitySet Name="Slider" EntityType="pr2ViModel.Slider" />
+          <EntitySet Name="sysdiagrams" EntityType="pr2ViModel.sysdiagrams" />
+          <EntitySet Name="Target" EntityType="pr2ViModel.Target" />
+          <EntitySet Name="Type" EntityType="pr2ViModel.Type" />
+          <AssociationSet Name="FK_Characteristic_Color" Association="pr2ViModel.FK_Characteristic_Color">
+            <End Role="Color" EntitySet="Color" />
+            <End Role="Characteristic" EntitySet="Characteristic" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Characteristic_Slider" Association="pr2ViModel.FK_Characteristic_Slider">
+            <End Role="Slider" EntitySet="Slider" />
+            <End Role="Characteristic" EntitySet="Characteristic" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Characteristic_Type" Association="pr2ViModel.FK_Characteristic_Type">
+            <End Role="Type" EntitySet="Type" />
+            <End Role="Characteristic" EntitySet="Characteristic" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Client_Requirements" Association="pr2ViModel.FK_Client_Requirements">
+            <End Role="Requirements" EntitySet="Requirements" />
+            <End Role="Client" EntitySet="Client" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Client" Association="pr2ViModel.FK_Order_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Manager" Association="pr2ViModel.FK_Order_Manager">
+            <End Role="Manager" EntitySet="Manager" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Slider" Association="pr2ViModel.FK_Order_Slider">
+            <End Role="Slider" EntitySet="Slider" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requirements_RequiredCharacteristic" Association="pr2ViModel.FK_Requirements_RequiredCharacteristic">
+            <End Role="RequiredCharacteristic" EntitySet="RequiredCharacteristic" />
+            <End Role="Requirements" EntitySet="Requirements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requirements_Target" Association="pr2ViModel.FK_Requirements_Target">
+            <End Role="Target" EntitySet="Target" />
+            <End Role="Requirements" EntitySet="Requirements" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Characteristic">
+          <Key>
+            <PropertyRef Name="SliderId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="SliderId" Type="Int32" Nullable="false" />
+          <Property Name="TypeId" Type="Int32" />
+          <Property Name="ColorId" Type="Int32" />
+          <NavigationProperty Name="Color" Relationship="pr2ViModel.FK_Characteristic_Color" FromRole="Characteristic" ToRole="Color" />
+          <NavigationProperty Name="Slider" Relationship="pr2ViModel.FK_Characteristic_Slider" FromRole="Characteristic" ToRole="Slider" />
+          <NavigationProperty Name="Type" Relationship="pr2ViModel.FK_Characteristic_Type" FromRole="Characteristic" ToRole="Type" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SurName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RequirementsId" Type="Int32" />
+          <NavigationProperty Name="Requirements" Relationship="pr2ViModel.FK_Client_Requirements" FromRole="Client" ToRole="Requirements" />
+          <NavigationProperty Name="Order" Relationship="pr2ViModel.FK_Order_Client" FromRole="Client" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Color">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Characteristic" Relationship="pr2ViModel.FK_Characteristic_Color" FromRole="Color" ToRole="Characteristic" />
+        </EntityType>
+        <EntityType Name="Manager">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SurName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Order" Relationship="pr2ViModel.FK_Order_Manager" FromRole="Manager" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ManagerId" Type="Int32" />
+          <Property Name="ClientId" Type="Int32" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="SliderId" Type="Int32" />
+          <NavigationProperty Name="Client" Relationship="pr2ViModel.FK_Order_Client" FromRole="Order" ToRole="Client" />
+          <NavigationProperty Name="Manager" Relationship="pr2ViModel.FK_Order_Manager" FromRole="Order" ToRole="Manager" />
+          <NavigationProperty Name="Slider" Relationship="pr2ViModel.FK_Order_Slider" FromRole="Order" ToRole="Slider" />
+        </EntityType>
+        <EntityType Name="RequiredCharacteristic">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Requirements" Relationship="pr2ViModel.FK_Requirements_RequiredCharacteristic" FromRole="RequiredCharacteristic" ToRole="Requirements" />
+        </EntityType>
+        <EntityType Name="Requirements">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="TargetId" Type="Int32" />
+          <Property Name="RequiredCharacteristicId" Type="Int32" />
+          <NavigationProperty Name="Client" Relationship="pr2ViModel.FK_Client_Requirements" FromRole="Requirements" ToRole="Client" />
+          <NavigationProperty Name="RequiredCharacteristic" Relationship="pr2ViModel.FK_Requirements_RequiredCharacteristic" FromRole="Requirements" ToRole="RequiredCharacteristic" />
+          <NavigationProperty Name="Target" Relationship="pr2ViModel.FK_Requirements_Target" FromRole="Requirements" ToRole="Target" />
+        </EntityType>
+        <EntityType Name="Slider">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Cost" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="Characteristic" Relationship="pr2ViModel.FK_Characteristic_Slider" FromRole="Slider" ToRole="Characteristic" />
+          <NavigationProperty Name="Order" Relationship="pr2ViModel.FK_Order_Slider" FromRole="Slider" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Target">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Requirements" Relationship="pr2ViModel.FK_Requirements_Target" FromRole="Target" ToRole="Requirements" />
+        </EntityType>
+        <EntityType Name="Type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Characteristic" Relationship="pr2ViModel.FK_Characteristic_Type" FromRole="Type" ToRole="Characteristic" />
+        </EntityType>
+        <Association Name="FK_Characteristic_Color">
+          <End Type="pr2ViModel.Color" Role="Color" Multiplicity="0..1" />
+          <End Type="pr2ViModel.Characteristic" Role="Characteristic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Color">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Characteristic">
+              <PropertyRef Name="ColorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Characteristic_Slider">
+          <End Type="pr2ViModel.Slider" Role="Slider" Multiplicity="1" />
+          <End Type="pr2ViModel.Characteristic" Role="Characteristic" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Slider">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Characteristic">
+              <PropertyRef Name="SliderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Characteristic_Type">
+          <End Type="pr2ViModel.Type" Role="Type" Multiplicity="0..1" />
+          <End Type="pr2ViModel.Characteristic" Role="Characteristic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Characteristic">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Client_Requirements">
+          <End Type="pr2ViModel.Requirements" Role="Requirements" Multiplicity="0..1" />
+          <End Type="pr2ViModel.Client" Role="Client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Requirements">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="RequirementsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Client">
+          <End Type="pr2ViModel.Client" Role="Client" Multiplicity="0..1" />
+          <End Type="pr2ViModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Manager">
+          <End Type="pr2ViModel.Manager" Role="Manager" Multiplicity="0..1" />
+          <End Type="pr2ViModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Manager">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="ManagerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Slider">
+          <End Type="pr2ViModel.Slider" Role="Slider" Multiplicity="0..1" />
+          <End Type="pr2ViModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Slider">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="SliderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requirements_RequiredCharacteristic">
+          <End Type="pr2ViModel.RequiredCharacteristic" Role="RequiredCharacteristic" Multiplicity="0..1" />
+          <End Type="pr2ViModel.Requirements" Role="Requirements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequiredCharacteristic">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Requirements">
+              <PropertyRef Name="RequiredCharacteristicId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requirements_Target">
+          <End Type="pr2ViModel.Target" Role="Target" Multiplicity="0..1" />
+          <End Type="pr2ViModel.Requirements" Role="Requirements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Requirements">
+              <PropertyRef Name="TargetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище pr2ViModelContainer" CdmEntityContainer="pr2ViEntities">
+          <EntitySetMapping Name="Characteristic">
+            <EntityTypeMapping TypeName="pr2ViModel.Characteristic">
+              <MappingFragment StoreEntitySet="Characteristic">
+                <ScalarProperty Name="ColorId" ColumnName="ColorId" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="SliderId" ColumnName="SliderId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Client">
+            <EntityTypeMapping TypeName="pr2ViModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="RequirementsId" ColumnName="RequirementsId" />
+                <ScalarProperty Name="SurName" ColumnName="SurName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Color">
+            <EntityTypeMapping TypeName="pr2ViModel.Color">
+              <MappingFragment StoreEntitySet="Color">
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Manager">
+            <EntityTypeMapping TypeName="pr2ViModel.Manager">
+              <MappingFragment StoreEntitySet="Manager">
+                <ScalarProperty Name="SurName" ColumnName="SurName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Order">
+            <EntityTypeMapping TypeName="pr2ViModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="SliderId" ColumnName="SliderId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RequiredCharacteristic">
+            <EntityTypeMapping TypeName="pr2ViModel.RequiredCharacteristic">
+              <MappingFragment StoreEntitySet="RequiredCharacteristic">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Requirements">
+            <EntityTypeMapping TypeName="pr2ViModel.Requirements">
+              <MappingFragment StoreEntitySet="Requirements">
+                <ScalarProperty Name="RequiredCharacteristicId" ColumnName="RequiredCharacteristicId" />
+                <ScalarProperty Name="TargetId" ColumnName="TargetId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Slider">
+            <EntityTypeMapping TypeName="pr2ViModel.Slider">
+              <MappingFragment StoreEntitySet="Slider">
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="pr2ViModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Target">
+            <EntityTypeMapping TypeName="pr2ViModel.Target">
+              <MappingFragment StoreEntitySet="Target">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Type">
+            <EntityTypeMapping TypeName="pr2ViModel.Type">
+              <MappingFragment StoreEntitySet="Type">
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="759f41267e1c4c7e95f3cf57b2946851" Name="Diagram1">
+        <EntityTypeShape EntityType="pr2ViModel.Characteristic" Width="1.5" PointX="7.5" PointY="4.75" />
+        <EntityTypeShape EntityType="pr2ViModel.Client" Width="1.5" PointX="5.25" PointY="1" />
+        <EntityTypeShape EntityType="pr2ViModel.Color" Width="1.5" PointX="5.25" PointY="13.375" />
+        <EntityTypeShape EntityType="pr2ViModel.Manager" Width="1.5" PointX="5.25" PointY="7.75" />
+        <EntityTypeShape EntityType="pr2ViModel.Order" Width="1.5" PointX="7.5" PointY="1" />
+        <EntityTypeShape EntityType="pr2ViModel.RequiredCharacteristic" Width="1.5" PointX="0.75" PointY="5.375" />
+        <EntityTypeShape EntityType="pr2ViModel.Requirements" Width="1.5" PointX="3" PointY="1.125" />
+        <EntityTypeShape EntityType="pr2ViModel.Slider" Width="1.5" PointX="5.25" PointY="5" />
+        <EntityTypeShape EntityType="pr2ViModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="pr2ViModel.Target" Width="1.5" PointX="0.75" PointY="1.375" />
+        <EntityTypeShape EntityType="pr2ViModel.Type" Width="1.5" PointX="5.25" PointY="11" />
+        <AssociationConnector Association="pr2ViModel.FK_Characteristic_Color" />
+        <AssociationConnector Association="pr2ViModel.FK_Characteristic_Slider" />
+        <AssociationConnector Association="pr2ViModel.FK_Characteristic_Type" />
+        <AssociationConnector Association="pr2ViModel.FK_Client_Requirements" />
+        <AssociationConnector Association="pr2ViModel.FK_Order_Client" />
+        <AssociationConnector Association="pr2ViModel.FK_Order_Manager" />
+        <AssociationConnector Association="pr2ViModel.FK_Order_Slider" />
+        <AssociationConnector Association="pr2ViModel.FK_Requirements_RequiredCharacteristic" />
+        <AssociationConnector Association="pr2ViModel.FK_Requirements_Target" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
